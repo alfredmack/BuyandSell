@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">MySecondApp</string>
+    <string name="app_name">BuyandSell</string>
+    <string name="usename">Usename:</string>
+    <string name="string_usename" />
+    <string name="enter_username">Enter Username</string>
+    <string name="password">Password</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="login">Login</string>
 </resources>

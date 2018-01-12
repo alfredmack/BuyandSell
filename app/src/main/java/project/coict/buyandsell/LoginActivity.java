@@ -1,8 +1,8 @@
-package project.coict.BuyandSell;
+package project.coict.buyandsell;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,42 +27,38 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import project.coict.buyandsell.R;
+public class LoginActivity extends AppCompatActivity {
 
-public class Login extends AppCompatActivity {
-
-    EditText user,pass;
     Button btnlogin;
-    String username;
-    String password;
     String TAG_SUCCESS="success";
+    String username,password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        user=(EditText)findViewById(R.id.txtusername);
-        pass=(EditText)findViewById(R.id.txtpassword);
-        btnlogin=(Button)findViewById(R.id.btnlogin);
+        final EditText user=findViewById(R.id.txtusername);
+        final EditText pass=findViewById(R.id.txtpassword);
+        btnlogin=findViewById(R.id.btnlogin);
 
-         username=user.getText().toString().trim();
-         password=pass.getText().toString().trim();
 
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                username=user.getText().toString();
+                password=pass.getText().toString();
+
                 //Call Login method
-                //you can use if statement to check if fields are empty before calling Login method
-                Login(username,password);
+                doLogin(username,password);
             }
         });
-
-
-
+        
 
 
     }
 
-    public void Login(final String user, final String pass){
+    public void doLogin(final String username, final String password){
+
 
         RequestQueue mRequestQueue;
 
@@ -79,30 +75,30 @@ public class Login extends AppCompatActivity {
         mRequestQueue.start();
 
         //change this IP 192.168.56.1 to your IP
-        String url ="http://192.168.56.1/BuyandSell/login.php";
+       // String url ="http://192.168.56.1/BuyandSell/login.php";
+
+        //access online scripts,using this url you can even run to your mobile
+        String url ="http://coict.alfadroid.com/BuyandSell/login.php";
 
 // Formulate the request and handle the response.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // Do something with the response
-                       // Toast.makeText(getApplicationContext(),"Response"+response,Toast.LENGTH_SHORT).show();
 
+                        // Do something with the response
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             Integer success=jsonObject.getInt(TAG_SUCCESS);
                             if(success==1){
-                                 //Call MainActivity if successful login
-                                Intent intent=new Intent(Login.this,MainActivity.class);
+                                //Call MainActivity if successful login
+                                Intent intent=new Intent(LoginActivity.this,MainActivity.class);
                                 startActivity(intent);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.d("Error",e.toString());
                         }
-
-
 
                     }
                 },
@@ -115,15 +111,16 @@ public class Login extends AppCompatActivity {
                 }){
 
             @Override
-        protected Map<String ,String> getParams() throws AuthFailureError {
+            protected Map<String ,String> getParams() throws AuthFailureError {
 
-            Map<String,String> params=new HashMap<String,String>();
-            params.put("username",user);
-            params.put("password",pass);
-            return params;
-        }};
+                Map<String,String> params=new HashMap<String,String>();
+                params.put("username",username);
+                params.put("password",password);
 
-       // stringRequest.setShouldCache(false); //Use this line if dont want to save in cache
+                return params;
+            }};
+
+         //stringRequest.setShouldCache(false); //Use this line if dont want to save in cache
 // Add the request to the RequestQueue.
         mRequestQueue.add(stringRequest);
 

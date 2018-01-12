@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("project.coict.mysecondapp", appContext.getPackageName());
+        assertEquals("project.coict.buyandsell", appContext.getPackageName());
     }
 }
